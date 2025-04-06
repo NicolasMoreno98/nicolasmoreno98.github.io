@@ -1,0 +1,202 @@
+/* Reset y configuración base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #363636;
+  color: white;
+}
+
+/* Encabezado y navegación */
+header {
+  background-color: #363636;
+  color: white;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.nav-horizontal {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  background-color: #363636;
+}
+
+.nav-horizontal a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-horizontal a:hover {
+  color: #ffffff;
+  transform: scale(1);
+}
+
+/* Logo */
+.logo-principal {
+  width: 80vw;
+  max-width: 800px;
+  height: auto;
+  margin: 20px auto 0;
+}
+
+/* Contenido general */
+.contenido-centro {
+  padding: 40px 20px;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .nav-horizontal {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-principal {
+    width: 60vw;
+  }
+}
+/* NAV principal */
+.nav-horizontal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+  background-color: #363636;
+}
+
+/* Cada ítem del menú */
+.menu-item {
+  background-color: #242424;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+/* Efecto hover solo en el contenedor */
+.menu-item:hover {
+  background-color: #3a3a3a;
+  transform: scale(1.05);
+}
+
+/* Enlace dentro del botón: sin efecto de hover */
+.menu-item a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: block;
+  width: 100%;
+  transition: none;
+}
+
+/* Logo responsivo */
+.logo-principal {
+  width: 80vw;
+  max-width: 800px;
+  height: auto;
+  margin: 20px auto 0;
+  display: block;
+}
+
+/* Móvil: menú apilado pero con espacio */
+@media (max-width: 768px) {
+  .nav-horizontal {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-item {
+    width: 80%;
+  }
+}
+.seccion-inicio {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.seccion-inicio h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: white;
+}
+
+/* Botón para jugar */
+.boton-jugar {
+  background-color: #b5b5b5;
+  color: #242424;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.boton-jugar:hover {
+  background-color: #cccccc;
+  transform: scale(1.05);
+}
+/* Estilo para formulario de registro */
+.form-container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #242424;
+  border-radius: 5px;
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: white;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-submit {
+  background-color: #b5b5b5;
+  color: #242424;
+  font-size: 1.1rem;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-submit:hover {
+  background-color: #cccccc;
+}
+.cuadro-contenido {
+  background-color: #242424;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 40px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
