@@ -15,13 +15,65 @@
       <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
       <div class="menu-item"><a href="about.html">Desarrollador</a></div>
     </nav>
-    <img src="Logo.png" alt="Chess.com" class="logo-principal" />
+    <a href="index.html">
+      <img src="Logo.png" alt="Chess.com" class="logo-principal" />
+    </a> 
   </header>
   <main class="contenido-centro">
     <div class="cuadro-contenido">
-      <section class="seccion-inicio">
-            <!-- Aquí va el contenido específico de cada página -->
-      </section>
+      <section class="partida-container">
+        <div class="zona-juego">
+          <div class="zona-turno-tiempo">
+            <p class="turno-jugador">Turno de: <strong>Jugador 1</strong></p>
+            <div class="tiempos-lado-a-lado">
+              <div class="tiempo-jugador">⏳ Jugador 1: <span class="tiempo">15:00</span></div>
+              <div class="tiempo-jugador">⏳ Jugador 2: <span class="tiempo">15:00</span></div>
+            </div>
+          </div>
+      
+          <div class="tablero-ajedrez">
+            <img src="tablero.jpg" alt="Tablero de ajedrez" />
+          </div>
+          <div class="invitar-oponente">
+            <button class="boton-invitar">Invitar oponente</button>
+          </div>
+        </div>
+        <div class="zona-historial">
+          <h3>Historial de movimientos</h3>
+          <ul class="lista-movimientos">
+            <li>1. e4 e5</li>
+            <li>2. Nf3 Nc6</li>
+            <li>3. Bb5 a6</li>
+            <li>4. Ba4 Nf6</li>
+            <li>5. O-O Be7</li>
+            <li>6. Re1 b5</li>
+            <li>7. Bb3 d6</li>
+            <li>8. c3 O-O</li>
+            <li>9. h3 Nb8</li>
+            <li>10. d4 Nbd7</li>
+            <li>11. Nbd2 Bb7</li>
+            <li>12. Bc2 Re8</li>
+            <li>13. Nf1 Bf8</li>
+            <li>14. Ng3 g6</li>
+            <li>15. a4 c5</li>
+            <li>16. d5 c4</li>
+            <li>17. Nh2 Nc5</li>
+            <li>18. Rf1 Bg7</li>
+            <li>19. Be3 Qc7</li>
+            <li>20. f4 exf4</li>
+            <li>21. Rxf4 Nfd7</li>
+            <li>22. Ng4 h5</li>
+            <li>23. Nh2 Ne5</li>
+            <li>24. Qe2 Ncd3</li>
+            <li>25. Rff1 Nxb2</li>
+            <li>26. Nxh5 gxh5</li>
+          </ul>
+      
+          <div class="rendirse">
+            <a href="main.html" class="boton-rendirse">Rendirse</a>
+          </div>
+        </div>
+      </section>      
     </div>
   </main>
 </body>
