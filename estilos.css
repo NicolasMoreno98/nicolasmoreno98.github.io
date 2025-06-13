@@ -1,0 +1,589 @@
+/* Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #363636;
+  color: white;
+}
+
+/* Header */
+header {
+  background-color: #363636;
+  color: white;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.nav-horizontal {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 20px;
+  background-color: #363636;
+}
+
+.menu-item {
+  background-color: #242424;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+}
+
+.menu-item a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: block;
+  width: 100%;
+  transition: none;
+}
+
+.nav-horizontal a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-horizontal a:hover {
+  color: #fff;
+  transform: scale(1);
+}
+
+.lista-partidas li a {
+  display: block;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.lista-partidas li a:hover {
+  color: #b5b5b5;
+}
+
+.menu-item:hover {
+  background-color: #3a3a3a;
+  transform: scale(1.05);
+}
+
+/* Logo */
+.logo-principal {
+  width: 80vw;
+  max-width: 800px;
+  height: auto;
+  margin: 20px auto 0;
+  display: block;
+}
+
+/* General */
+.contenido-centro {
+  padding: 40px 20px;
+}
+
+@media (width <= 768px) {
+  .nav-horizontal {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-principal {
+    width: 60vw;
+  }
+
+  .menu-item {
+    width: 80%;
+  }
+}
+
+.seccion-inicio {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.seccion-inicio h1 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: white;
+}
+
+/* Boton play */
+.boton-jugar {
+  background-color: #b5b5b5;
+  color: #242424;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.boton-jugar:hover {
+  background-color: #ccc;
+  transform: scale(1.05);
+}
+
+/* Formulario */
+.form-container {
+  max-width: 500px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #242424;
+  border-radius: 5px;
+}
+
+.form-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: white;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form-submit {
+  background-color: #b5b5b5;
+  color: #242424;
+  font-size: 1.1rem;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-submit:hover {
+  background-color: #ccc;
+}
+
+.cuadro-contenido {
+  background-color: #242424;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 800px;
+  margin: 40px auto;
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+
+.estadisticas-jugador {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.estadisticas-jugador h2 {
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+}
+
+.estadisticas-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.estadistica {
+  background-color: #242424;
+  border-radius: 10px;
+  padding: 20px 30px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.estadistica .cantidad {
+  display: block;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.victoria .cantidad {
+  color: #4caf50;
+}
+
+.empate .cantidad {
+  color: white;
+}
+
+.derrota .cantidad {
+  color: #f44336;
+}
+
+.etiqueta {
+  font-size: 1rem;
+}
+
+.partidas-en-curso {
+  margin-top: 40px;
+}
+
+.partidas-en-curso h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+}
+
+.lista-partidas {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.lista-movimientos li {
+  margin-bottom: 5px;
+}
+
+.lista-partidas li {
+  background-color: #242424;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 20%);
+  transition: transform 0.2s ease;
+}
+
+.lista-partidas li:hover {
+  transform: scale(1.02);
+  background-color: #2e2e2e;
+}
+
+.panel-partidas {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.columna-partidas {
+  flex: 1;
+  min-width: 300px;
+}
+
+.columna-partidas h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+}
+
+.crear-partida {
+  text-align: center;
+  margin: 60px auto 0;
+  padding: 30px 20px;
+  background-color: #242424;
+  border-radius: 12px;
+  width: fit-content;
+  max-width: 90%;
+  box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+}
+
+.crear-partida h2 {
+  font-size: 1.6rem;
+  margin-bottom: 40px;
+}
+
+/* Boton partida */
+.boton-privada {
+  background-color: #b5b5b5;
+  color: #242424;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.boton-privada:hover {
+  background-color: #ccc;
+  transform: scale(1.05);
+}
+
+.partidas-abiertas {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.partidas-abiertas h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+}
+
+.perfil-jugador {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding: 40px;
+  background-color: #242424;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+  margin: 40px auto;
+  max-width: 1000px;
+  flex-wrap: wrap;
+}
+
+.perfil-icono {
+  flex: 1;
+  text-align: center;
+}
+
+.avatar-jugador {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #b5b5b5;
+}
+
+.perfil-info {
+  flex: 3;
+  color: white;
+}
+
+.victoria-num {
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.empate-num {
+  color: white;
+  font-weight: bold;
+}
+
+.derrota-num {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.editar-perfil {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.boton-editar {
+  background-color: #b5b5b5;
+  color: #242424;
+  padding: 10px 25px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.boton-editar:hover {
+  background-color: #ccc;
+  transform: scale(1.05);
+}
+
+.partida-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+/* play izq */
+.zona-juego {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #242424;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.zona-turno-tiempo {
+  text-align: center;
+}
+
+.turno-jugador {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.tiempos-lado-a-lado {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.tiempo-jugador {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Tablero */
+.tablero-ajedrez img {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid #b5b5b5;
+}
+
+/* Invite */
+.invitar-oponente {
+  text-align: center;
+}
+
+.boton-invitar {
+  background-color: #b5b5b5;
+  color: #242424;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+/* play derecha */
+.zona-historial {
+  flex: 1;
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.zona-historial h3 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.lista-movimientos {
+  list-style: none;
+  padding: 0;
+  max-height: 500px;
+  overflow-y: auto;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* surrender */
+.rendirse {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.boton-rendirse {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.boton-rendirse:hover {
+  background-color: #e53935;
+}
+
+/* Rules */
+.cuadro-contenido h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.imagen-tablero-reglas img {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto 0;
+  display: block;
+  border-radius: 8px;
+  border: 2px solid #b5b5b5;
+}
+
+/* Piezas */
+.piezas-ajedrez {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.pieza-regla {
+  display: flex;
+  gap: 20px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pieza-icono {
+  flex: 1;
+  text-align: center;
+}
+
+.icono-pieza {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #b5b5b5;
+}
+
+.pieza-info {
+  flex: 3;
+}
+
+.pieza-info h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+}
+
+.pieza-info p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.perfil-desarrollador {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding: 40px;
+  background-color: #242424;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgb(0 0 0 / 30%);
+  margin: 40px auto;
+  max-width: 1000px;
+  flex-wrap: wrap;
+}
+
+.perfil-info h2,
+.perfil-info p {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+.perfil-info .dato {
+  font-weight: bold;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reglas</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <header>
+    <nav class="nav-horizontal">
+      <div class="menu-item"><a href="main.html">Página principal</a></div>
+      <div class="menu-item"><a href="profile.html">Perfil de usuario</a></div>
+      <div class="menu-item"><a href="play.html">Partida de ajedrez</a></div>
+      <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
+      <div class="menu-item"><a href="about.html">Desarrollador</a></div>
+    </nav>
+    <a href="index.html">
+      <img src="Logo.png" alt="Chess.com" class="logo-principal" />
+    </a> 
+  </header>
+  <main class="contenido-centro">
+    <div class="cuadro-contenido">
+      <main class="contenido-centro">
+        <section class="historia-ajedrez cuadro-contenido">
+          <h2>Historia del Ajedrez</h2>
+          <p>
+            El ajedrez se juega desde hace más de 1500 años. Fue inventado en la India en el siglo VI d.C. bajo el nombre de chaturanga, y sus piezas representaban unidades militares como infantería, caballería, elefantes y carros. El juego se difundió a Persia en el siglo VII y, tras la expansión islámica, llegó al mundo musulmán y luego a Europa, alcanzando el oeste del continente hacia el año 1000. Un ejemplo temprano de piezas europeas es el conjunto de la Isla de Lewis.
+          </p>
+          <p>
+            Con su expansión, las reglas del ajedrez fueron cambiando y las piezas renombradas. Las reglas modernas surgieron en Italia y España hacia el siglo XV, y varios autores como Lucena, Ruy López y Greco ayudaron a establecer su estudio como disciplina.          
+          </p>
+        </section>
+        <section class="reglas-basicas cuadro-contenido">
+          <h2>Reglas Básicas</h2>
+          <p>
+          El objetivo principal del ajedrez es dar jaque mate al rey del oponente, lo que significa colocarlo bajo ataque sin posibilidad de escape. Cada jugador comienza con 16 piezas: un rey, una dama (reina), dos torres, dos alfiles, dos caballos y ocho peones. El juego se desarrolla por turnos alternados que deben suman 15 minutos, comenzando siempre el jugador con las piezas blancas.
+          </p>
+          <p>
+          Cada tipo de pieza tiene movimientos específicos. Las piezas se desplazan según su tipo y las posiciones disponibles en el tablero, el cual consta de 64 casillas distribuidas en una cuadrícula de 8x8. La disposición inicial de las piezas es siempre la misma, con las filas traseras ocupadas por las piezas mayores y los peones colocados al frente.
+          </p>
+          <p>
+          A continuación se muestra el tablero en su configuración inicial:
+          </p>
+          <div class="imagen-tablero-reglas">
+            <img src="tablero.jpg" alt="Tablero inicial de ajedrez" />
+          </div>
+        </section>
+        <section class="piezas-ajedrez">
+          <div class="pieza-regla">
+            <div class="pieza-icono">
+              <img src="Rey.png" alt="Rey" class="icono-pieza" />
+            </div>
+            <div class="pieza-info">
+              <h3>Rey</h3>
+              <p>Se mueve una casilla en cualquier dirección. Es la pieza más importante: si está en jaque mate, se pierde la partida.</p>
+            </div>
+          </div>
+          <div class="pieza-regla">
+            <div class="pieza-icono">
+              <img src="Reina.png" alt="Reina" class="icono-pieza" />
+            </div>
+            <div class="pieza-info">
+              <h3>Reina</h3>
+              <p>Se mueve en línea recta en cualquier dirección: horizontal, vertical o diagonal.</p>
+            </div>
+          </div>
+          <div class="pieza-regla">
+            <div class="pieza-icono">
+              <img src="Torre.png" alt="Torre" class="icono-pieza" />
+            </div>
+            <div class="pieza-info">
+              <h3>Torre</h3>
+              <p>Se mueve en línea recta horizontal o vertical. Puede enrocar con el rey.</p>
+            </div>
+          </div>
+          <div class="pieza-regla">
+            <div class="pieza-icono">
+              <img src="Alfil.png" alt="Alfil" class="icono-pieza" />
+            </div>
+            <div class="pieza-info">
+              <h3>Alfil</h3>
+              <p>Se mueve en línea recta diagonal, limitado a las casillas de su color inicial.</p>
+            </div>
+          </div>
+          <div class="pieza-regla">
+            <div class="pieza-icono">
+              <img src="Caballo.png" alt="Caballo" class="icono-pieza" />
+            </div>
+            <div class="pieza-info">
+              <h3>Caballo</h3>
+              <p>Se mueve en forma de “L”: dos casillas en una dirección y una perpendicular. Unica pieza que puede saltar sobre otras.</p>
+            </div>
+          </div>
+          <div class="pieza-regla">
+            <div class="pieza-icono">
+              <img src="Peon.png" alt="Peón" class="icono-pieza" />
+            </div>
+            <div class="pieza-info">
+              <h3>Peón</h3>
+              <p>Avanza una casilla hacia adelante, o dos si está en su posición inicial. Captura en diagonal. Se puede promover si llega al otro extremo del tablero.</p>
+            </div>
+          </div>
+        </section>
+      </main>      
+    </div>
+  </main>
+</body>
+</html>
