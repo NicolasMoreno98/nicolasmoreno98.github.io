@@ -48,34 +48,33 @@ exports.obtenerPartida = async (req, res) => {
 
 // Unirse a una partida
 exports.unirsePartida = async (req, res) => {
-  try {
-    const { codigo } = req.params;
-    const { rol } = req.body; // "jugador" o "espectador"
-    const userId = req.usuario.id;
+    const { codigo } = req.body;
+    const usuarioId = req.usuario.id; // el ID del usuario autenticado
 
+    // Busca la partida por código
     const partida = await Partida.findOne({ codigo });
-    if (!partida) {
-      return res.status(404).json({ mensaje: "Partida no encontrada" });
+    if (!partida) return res.status(404).json({ mensaje: "Partida no encontrada" });
+
+    // Si es el creador, no hacer nada extra
+    if (partida.creador.equals(usuarioId)) {
+        return res.json({ mensaje: "Eres el creador", rol: "jugador1", color: partida.colorCreador });
     }
 
-    // Solo puede haber un jugador2, los demás van a espectadores
-    if (rol === "jugador" && !partida.jugador2 && String(userId) !== String(partida.jugador1)) {
-      partida.jugador2 = userId;
-      partida.estado = "en_juego";
-    } else if (rol === "espectador") {
-      if (!partida.espectadores.includes(userId)) {
-        partida.espectadores.push(userId);
-      }
-    } else if (rol === "jugador" && partida.jugador2 && !partida.espectadores.includes(userId)) {
-      partida.espectadores.push(userId); // Si ya hay jugador2, va a espectadores
+    // Si jugador2 está libre, asignar este usuario
+    if (!partida.jugador2) {
+        partida.jugador2 = usuarioId;
+        await partida.save();
+        // Color opuesto al creador
+        const color = partida.colorCreador === "blanco" ? "negro" : "blanco";
+        return res.json({ mensaje: "Unido como jugador2", rol: "jugador2", color });
     }
 
-    await partida.save();
-    res.json({ mensaje: "Unido correctamente", partida });
-  } catch (err) {
-    console.error("Error al unirse a partida:", err);
-    res.status(500).json({ mensaje: "Error interno al unirse" });
-  }
+    // Si ya hay dos jugadores, agregar como espectador
+    if (!partida.espectadores.includes(usuarioId)) {
+        partida.espectadores.push(usuarioId);
+        await partida.save();
+    }
+    return res.json({ mensaje: "Unido como espectador", rol: "espectador" });
 };
 
 // Eliminar partida (solo el creador)
