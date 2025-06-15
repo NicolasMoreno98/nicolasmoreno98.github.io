@@ -14,6 +14,33 @@ board.style.borderRadius = '10px';
 tableroContainer.innerHTML = '';
 tableroContainer.appendChild(board);
 const API_BASE = "http://localhost:3000";
+const urlParams = new URLSearchParams(window.location.search);
+const codigoPartida = urlParams.get('partida');
+
+let usuarioActual = null;
+let miColor = null;
+
+async function cargarDatosUsuarioYPartida() {
+  // Obtener usuario
+  const res = await fetch(`${API_BASE}/api/auth/perfil`, { credentials: "include" });
+  usuarioActual = await res.json();
+
+  // Obtener partida
+  const urlParams = new URLSearchParams(window.location.search);
+  const codigoPartida = urlParams.get('partida');
+  const resPartida = await fetch(`${API_BASE}/api/partidas/${codigoPartida}`, { credentials: "include" });
+  const partida = await resPartida.json();
+
+  // Asignar miColor
+    if (String(usuarioActual._id) === String(partida.jugador1)) {
+      miColor = partida.colorCreador === "blanco" ? "white" : "black";
+    } else if (String(usuarioActual._id) === String(partida.jugador2)) {
+      miColor = partida.colorCreador === "blanco" ? "black" : "white";
+    } else {
+      miColor = "espectador";
+    }
+    alert("Tu color en esta partida es: " + miColor);
+}
 
 
 let initialPosition = [
@@ -265,9 +292,19 @@ function renderBoard() {
           let to = { row: parseInt(this.getAttribute('data-row')), col: parseInt(this.getAttribute('data-col')) };
           let movingPiece = initialPosition[from.row][from.col];
           if ((turn == 'white' && isWhite(movingPiece)) || (turn == 'black' && isBlack(movingPiece))) {
-            if (isLegalMove(movingPiece, from, to)) {
-              moveAndSwitchTurn(from, to, movingPiece);
-            }
+          if (turn !== miColor) {
+            alert("¡No es tu turno!");
+            return;
+          }
+          if ((miColor === "white" && !isWhite(movingPiece)) || (miColor === "black" && !isBlack(movingPiece))) {
+            alert("¡No puedes mover las piezas del rival!");
+            return;
+          }
+          // ==========================
+
+          if (isLegalMove(movingPiece, from, to)) {
+            moveAndSwitchTurn(from, to, movingPiece);
+          }
           }
         });
       }
@@ -305,8 +342,8 @@ function renderCaptured() {
   negras.innerHTML = capturedBlack.length > 0 ? 'Negras capturadas: ' + capturedBlack.join(' ') : '';
 }
 async function moveAndSwitchTurn(from, to, movingPiece) {
-  let target = initialPosition[to.row][to.col];
-  let capture = target && ((turn == 'white' && isBlack(target)) || (turn == 'black' && isWhite(target)));
+  var target = initialPosition[to.row][to.col];
+  var capture = target && ((turn == 'white' && isBlack(target)) || (turn == 'black' && isWhite(target)));
   if (capture) {
     if (isWhite(target)) capturedWhite.push(target);
     else if (isBlack(target)) capturedBlack.push(target);
@@ -322,11 +359,15 @@ async function moveAndSwitchTurn(from, to, movingPiece) {
   let a = files[to.col] + ranks[to.row];
   moveHistory.push({pieza: pieza, color: color, de: de, a: a});
   turn = turn == 'white' ? 'black' : 'white';
+
+  await moverPiezaEnServidor(codigoPartida, initialPosition, moveHistory, turn, timers);
+ 
   renderBoard();
   renderMoveHistory();
   renderCaptured();
   startTimer();
 }
+
 document.getElementById('btn-reiniciar').onclick = function() {
   initialPosition = [
     ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
@@ -354,7 +395,6 @@ document.getElementById('btn-rendirse').onclick = function() {
   alert('¡Victoria para ' + ganador + ' por rendición!');
 };
 
-// ======== Cargar la partida del backend ========
 async function cargarPartidaDesdeServidor() {
   try {
     const params = new URLSearchParams(window.location.search);
@@ -432,4 +472,5 @@ setInterval(() => {
   cargarPartidaDesdeServidor();
 }, 1000);
 
+cargarDatosUsuarioYPartida();
 cargarPartidaDesdeServidor();
