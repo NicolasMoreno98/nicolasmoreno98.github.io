@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "clave_super_secreta";
 const JWT_EXPIRACION = "1d";
 
-// Registrar nuevo usuario
 exports.register = async (req, res) => {
   const { nombreUsuario, correo, contraseña, fechaNacimiento } = req.body;
 
@@ -37,7 +36,6 @@ exports.register = async (req, res) => {
   }
 };
 
-// Iniciar sesión
 exports.login = async (req, res) => {
   const { nombreUsuario, contraseña } = req.body;
 
@@ -74,7 +72,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// Cerrar sesión
 exports.logout = (req, res) => {
   res.clearCookie("token");
   return res.json({ mensaje: "Sesión cerrada." });

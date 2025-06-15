@@ -18,14 +18,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const boton = document.getElementById("boton-inicio");
 
     if (res.ok) {
-      const user = await res.json();  // ← extrae nombreUsuario
+      const user = await res.json();
 
       div.innerHTML = '<a href="profile.html">Perfil de usuario</a>';
 
       if (titulo && boton) {
         titulo.textContent = `Bienvenido, ${user.nombreUsuario}`;
         boton.textContent = "Jugar";
-        boton.href = "play.html";
+        boton.href = "start.html";
       }
     } else {
       div.innerHTML = '<a href="login.html">Iniciar Sesión</a>';

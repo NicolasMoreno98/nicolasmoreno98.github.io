@@ -21,25 +21,20 @@ let usuarioActual = null;
 let miColor = null;
 
 async function cargarDatosUsuarioYPartida() {
-  // Obtener usuario
   const res = await fetch(`${API_BASE}/api/auth/perfil`, { credentials: "include" });
   usuarioActual = await res.json();
 
-  // Obtener partida
   const urlParams = new URLSearchParams(window.location.search);
   const codigoPartida = urlParams.get('partida');
   const resPartida = await fetch(`${API_BASE}/api/partidas/${codigoPartida}`, { credentials: "include" });
   const partida = await resPartida.json();
 
-  // Asignar miColor
   if (String(usuarioActual._id) === String(partida.jugador1)) {
     miColor = partida.colorCreador === "blanco" ? "Blanco" : "Negro";
   } else if (String(usuarioActual._id) === String(partida.jugador2)) {
     miColor = partida.colorCreador === "blanco" ? "Negro" : "Blanco";
   } else if (!partida.jugador2) {
-    // Si no hay jugador2, este usuario debería ser el jugador2
     miColor = partida.colorCreador === "blanco" ? "Negro" : "Blanco";
-    // Actualizar jugador2 en el servidor
     await fetch(`${API_BASE}/api/partidas/${codigoPartida}/unirse`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,7 +45,6 @@ async function cargarDatosUsuarioYPartida() {
   }
   alert("Tu color en esta partida es: " + miColor);
 
-  // Convertir miColor para la lógica del juego después del alert
   if (miColor === "Blanco") miColor = "white";
   else if (miColor === "Negro") miColor = "black";
 }
@@ -313,7 +307,6 @@ function renderBoard() {
             alert("¡No puedes mover las piezas del rival!");
             return;
           }
-          // ==========================
 
           if (isLegalMove(movingPiece, from, to)) {
             moveAndSwitchTurn(from, to, movingPiece);
@@ -430,7 +423,6 @@ document.getElementById('btn-rendirse').onclick = async function() {
       throw new Error(data.mensaje || "Error al rendirse");
     }
 
-    // No mostrar el mensaje aquí, se mostrará en cargarPartidaDesdeServidor
     partidaFinalizada = true;
     document.getElementById('btn-rendirse').disabled = true;
     
@@ -458,7 +450,6 @@ async function cargarPartidaDesdeServidor() {
       throw new Error("Datos de partida no válidos");
     }
 
-    // Verificar si la partida terminó
     if (!mensajeVictoriaMostrado && data.estado === "finalizada" && data.resultado?.ganador) {
       clearInterval(timerInterval);
       const colorGanador = data.resultado.ganador === "blanco" ? "Blancas" : "Negras";
@@ -470,17 +461,14 @@ async function cargarPartidaDesdeServidor() {
       return;
     }
 
-    // Actualizar estado del tablero
     if (data.tablero) {
       initialPosition = data.tablero;
     }
 
-    // Actualizar historial de movimientos
     if (data.historialMovimientos) {
       moveHistory = data.historialMovimientos;
     }
 
-    // Actualizar piezas capturadas
     if (data.piezasCapturadas) {
       capturedWhite = data.piezasCapturadas.blancas || [];
       capturedBlack = data.piezasCapturadas.negras || [];
@@ -490,7 +478,6 @@ async function cargarPartidaDesdeServidor() {
       turn = data.turno;
     }
 
-    // Actualizar toda la UI
     renderBoard();
     renderMoveHistory();
     renderCaptured();

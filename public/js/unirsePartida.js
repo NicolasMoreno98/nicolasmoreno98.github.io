@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const codigo = document.getElementById("codigo").value.trim();
 
     try {
-      // Consultar la existencia de la partida
       const res = await fetch(`${API_BASE}/api/partidas/${codigo}`, {
         method: "GET",
         credentials: "include"

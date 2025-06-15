@@ -10,12 +10,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const usuario = await res.json();
 
-    // Insertar datos en el HTML
     document.getElementById("nombreUsuario").textContent = usuario.nombreUsuario;
     document.getElementById("correo").textContent = usuario.correo;
     document.getElementById("fechaNacimiento").textContent = usuario.fechaNacimiento;
 
-    // Cargar y mostrar las partidas del usuario
     await cargarPartidas();
   } catch (err) {
     console.error("Error al cargar perfil:", err);
@@ -87,7 +85,7 @@ async function eliminarPartida(codigo) {
       throw new Error('No se pudo eliminar la partida');
     }
 
-    await cargarPartidas(); // Recargar la lista de partidas
+    await cargarPartidas();
     alert('Partida eliminada correctamente');
   } catch (err) {
     console.error('Error al eliminar la partida:', err);

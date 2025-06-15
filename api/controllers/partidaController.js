@@ -1,7 +1,6 @@
 const Partida = require('../models/Partida');
 const { v4: uuidv4 } = require("uuid");
 
-// Crear nueva partida
 exports.crearPartida = async (req, res) => {
   try {
     const { color } = req.body;
@@ -9,8 +8,7 @@ exports.crearPartida = async (req, res) => {
       return res.status(400).json({ mensaje: "Color inválido" });
     }
 
-    // El usuario debe estar autenticado (req.usuario.id)
-    const codigo = Math.random().toString(16).slice(2, 10); // 8 caracteres únicos
+    const codigo = Math.random().toString(16).slice(2, 10);
 
     const nuevaPartida = new Partida({
       codigo,
@@ -26,7 +24,6 @@ exports.crearPartida = async (req, res) => {
 
     await nuevaPartida.save();
 
-    // Devuelve el código al frontend
     return res.status(201).json({ codigo: nuevaPartida.codigo });
   } catch (err) {
     console.error("Error al crear partida:", err);
@@ -34,7 +31,6 @@ exports.crearPartida = async (req, res) => {
   }
 };
 
-// Obtener partida por código (NO por _id)
 exports.obtenerPartida = async (req, res) => {
   try {
     const codigo = req.params.codigo;
@@ -46,17 +42,14 @@ exports.obtenerPartida = async (req, res) => {
   }
 };
 
-// Unirse a una partida
 exports.unirsePartida = async (req, res) => {
   try {
-    const { codigo } = req.params;  // Cambiado de req.body a req.params
+    const { codigo } = req.params;
     const usuarioId = req.usuario.id;
 
-    // Buscar la partida por código
     const partida = await Partida.findOne({ codigo });
     if (!partida) return res.status(404).json({ mensaje: "Partida no encontrada" });
 
-    // Si es el creador/jugador1
     if (String(partida.jugador1) === String(usuarioId)) {
       return res.json({ 
         mensaje: "Eres el jugador 1", 
@@ -65,7 +58,6 @@ exports.unirsePartida = async (req, res) => {
       });
     }
 
-    // Si es el jugador2 existente
     if (partida.jugador2 && String(partida.jugador2) === String(usuarioId)) {
       const colorJugador2 = partida.colorCreador === "blanco" ? "negro" : "blanco";
       return res.json({ 
@@ -75,7 +67,6 @@ exports.unirsePartida = async (req, res) => {
       });
     }
 
-    // Si el jugador2 está libre, asignar este usuario
     if (!partida.jugador2) {
       partida.jugador2 = usuarioId;
       partida.estado = "jugando";
@@ -89,7 +80,6 @@ exports.unirsePartida = async (req, res) => {
       });
     }
 
-    // Si ya hay dos jugadores, unir como espectador
     if (!partida.espectadores.includes(usuarioId)) {
       partida.espectadores.push(usuarioId);
       await partida.save();
@@ -105,7 +95,6 @@ exports.unirsePartida = async (req, res) => {
   }
 };
 
-// Eliminar partida (solo el creador)
 exports.eliminarPartida = async (req, res) => {
   try {
     const { codigo } = req.params;
@@ -125,7 +114,6 @@ exports.eliminarPartida = async (req, res) => {
   }
 };
 
-// Listar partidas en las que participa o es espectador
 exports.listarPartidasUsuario = async (req, res) => {
   try {
     const userId = req.usuario.id;
@@ -152,7 +140,6 @@ exports.moverPieza = async (req, res) => {
     const partida = await Partida.findOne({ codigo });
     if (!partida) return res.status(404).json({ mensaje: "Partida no encontrada" });
 
-    // Actualiza todos los datos de la partida
     partida.tablero = nuevaPosicion;
     partida.historialMovimientos = historial;
     partida.turno = turno;
@@ -185,7 +172,6 @@ exports.rendirse = async (req, res) => {
       return res.status(404).json({ mensaje: "Partida no encontrada" });
     }
 
-    // Verificar si el usuario es uno de los jugadores
     const esJugador1 = String(partida.jugador1) === String(usuarioId);
     const esJugador2 = String(partida.jugador2) === String(usuarioId);
 
@@ -193,12 +179,10 @@ exports.rendirse = async (req, res) => {
       return res.status(403).json({ mensaje: "No eres jugador de esta partida" });
     }
 
-    // Determinar el color del jugador que se rinde
     const miColor = esJugador1 ? 
       (partida.colorCreador === "blanco" ? "blanco" : "negro") :
       (partida.colorCreador === "blanco" ? "negro" : "blanco");
 
-    // El ganador es el color opuesto
     const colorGanador = miColor === "blanco" ? "negro" : "blanco";
 
     partida.estado = "finalizada";

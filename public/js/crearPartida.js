@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
         resultado.innerHTML = `
           <div>
             <p>Comparte este código para invitar a un jugador:</p>
-            <code id="codigo-partida" style="font-size:22px; background:#111; color:#58f; padding:4px 12px; border-radius:6px;">${data.codigo}</code>
+            <code id="codigo-partida" style="boton-privada">${data.codigo}</code>
             <button id="btn-copiar" style="margin-left:8px;">Copiar</button>
           </div>
-          <button id="btn-ir-partida" style="margin-top:18px; padding:8px 18px; font-size:16px; border-radius:8px; background:#222; color:#fff; cursor:pointer;">Ir a la partida</button>
+          <button id="btn-ir-partida" style="boton-privada">Ir a la partida</button>
         `;
 
         document.getElementById("btn-copiar").onclick = () => {
