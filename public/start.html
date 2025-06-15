@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crear Partida</title>
+  <title>Iniciar Partida</title>
   <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
@@ -20,23 +20,16 @@
   </header>
   <main class="contenido-centro">
     <div class="cuadro-contenido">
-      <h2>Crear nueva partida</h2>
-      <form id="formCrearPartida" autocomplete="off">
-        <label for="color">Selecciona tu color:</label>
-        <select id="color" name="color" required>
-          <option value="">-- Selecciona --</option>
-          <option value="blanco">Blancas</option>
-          <option value="negro">Negras</option>
-        </select>
-        <button type="submit">Crear partida</button>
-      </form>
-      <div id="resultado" style="margin-top:18px;"></div>
+      <section class="opciones-partida">
+        <h2>Iniciar una partida</h2>
+        <div class="botones-partida">
+          <a href="crearPartida.html" class="boton-jugar">Crear Partida</a>
+          <a href="unirsePartida.html" class="boton-jugar">Unirse a Partida</a>
+        </div>
+      </section>
     </div>
   </main>
   <script src="js/config.js"></script>
   <script src="js/verificarSesion.js"></script>
-  <script src="js/crearPartida.js"></script>
 </body>
 </html>
-
-

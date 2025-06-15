@@ -62,7 +62,8 @@ exports.login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "Lax",       // ← Ideal para Live Server
+      secure: true,         // ← Habilita HTTPS
+      sameSite: "Strict",   // ← Mayor seguridad que Lax
       maxAge: 24 * 60 * 60 * 1000
     });
 

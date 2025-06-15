@@ -7,10 +7,9 @@
   <link rel="stylesheet" href="estilos.css" />
 </head>
 <body>
-  <header>
-    <nav class="nav-horizontal">
+  <header>    <nav class="nav-horizontal">
       <div class="menu-item"><a href="main.html">Página principal</a></div>
-      <div class="menu-item"><a href="play.html">Partida de ajedrez</a></div>
+      <div class="menu-item"><a href="start.html">Partidas</a></div>
       <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
       <div class="menu-item"><a href="about.html">Desarrollador</a></div>
     </nav>
@@ -19,8 +18,7 @@
     </a> 
   </header>
   <main class="contenido-centro">
-    <div class="cuadro-contenido">
-      <section class="perfil-jugador">
+    <div class="cuadro-contenido">      <section class="perfil-jugador">
         <div class="perfil-icono">
           <img src="img/icon.png" alt="Avatar del jugador" class="avatar-jugador" />
         </div>
@@ -31,6 +29,13 @@
         </div>
         <div class="cerrar-sesion">
           <button id="cerrarSesion" class="boton-editar">Cerrar sesión</button>
+        </div>
+      </section>
+
+      <section class="partidas-creadas">
+        <h2>Mis Partidas</h2>
+        <div id="listaPartidas" class="lista-partidas">
+          <!-- Las partidas se cargarán aquí dinámicamente -->
         </div>
       </section>
     </div>
