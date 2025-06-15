@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <header>
+    <nav class="nav-horizontal">
+      <div class="menu-item"><a href="main.html">Página principal</a></div>
+      <div class="menu-item"><a href="play.html">Partida de ajedrez</a></div>
+      <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
+      <div class="menu-item"><a href="about.html">Desarrollador</a></div>
+    </nav>
+    <a href="index.html">
+      <img src="img/Logo.png" alt="Chess.com" class="logo-principal" />
+    </a>    
+  </header>
+  <main class="contenido-centro">
+    <div class="cuadro-contenido">
+      <section class="estadisticas-jugador">
+        <h2>Estadísticas del Jugador</h2>
+        <div class="estadisticas-grid">
+          <div class="estadistica victoria">
+            <span class="cantidad">12</span>
+            <span class="etiqueta">Victorias</span>
+          </div>
+          <div class="estadistica empate">
+            <span class="cantidad">3</span>
+            <span class="etiqueta">Empates</span>
+          </div>
+          <div class="estadistica derrota">
+            <span class="cantidad">5</span>
+            <span class="etiqueta">Derrotas</span>
+          </div>
+          <div class="estadistica empate">
+            <span class="cantidad">1224</span>
+            <span class="etiqueta">MMR</span>
+          </div>
+        </div>
+      </section>
+      <section class="panel-partidas">
+        <div class="columna-partidas">
+          <h2>Top 10 Partidas en Curso</h2>
+          <ul class="lista-partidas">
+            <li><a href="main.html"><strong>#1</strong> Magnus vs Hikaru – 2400 vs 2380</a></li>
+            <li><a href="main.html"><strong>#2</strong> Daigo vs JWong – 2390 vs 2350</a></li>
+            <li><a href="main.html"><strong>#3</strong> Grubby vs Moon – 2375 vs 2360</a></li>
+            <li><a href="main.html"><strong>#4</strong> Reckful vs Venruki – 2360 vs 2335</a></li>
+            <li><a href="main.html"><strong>#5</strong> Knee vs Arslan Ash – 2345 vs 2300</a></li>
+            <li><a href="main.html"><strong>#6</strong> Mang0 vs Zain – 2325 vs 2310</a></li>
+            <li><a href="main.html"><strong>#7</strong> Dark vs Roche – 2300 vs 2295</a></li>
+            <li><a href="main.html"><strong>#8</strong> Seeiya vs Chalaa – 2280 vs 2270</a></li>
+            <li><a href="main.html"><strong>#9</strong> Tokido vs Punk – 2275 vs 2260</a></li>
+            <li><a href="main.html"><strong>#10</strong> S1mple vs Donk – 2260 vs 2250</a></li>
+          </ul>
+        </div>
+      
+        <div class="columna-partidas">
+          <h2>Historial de Partidas jugadas</h2>
+          <ul class="lista-partidas">
+            <li><a href="main.html"><strong>Ganada</strong> vs Adrian – 1-0</a></li>
+            <li><a href="main.html"><strong>Perdida</strong> vs Payi – 0-1</a></li>
+            <li><a href="main.html"><strong>Empate</strong> vs Allik – 0-0</a></li>
+            <li><a href="main.html"><strong>Ganada</strong> vs Iñas – 1-0</a></li>
+            <li><a href="main.html"><strong>Empate</strong> vs Chuck – 0-0</a></li>
+            <li><a href="main.html"><strong>Perdida</strong> vs Flea – 0-1</a></li>
+            <li><a href="main.html"><strong>Ganada</strong> vs Rosk – 1-0</a></li>
+            <li><a href="main.html"><strong>Ganada</strong> vs Noizy – 1-0</a></li>
+            <li><a href="main.html"><strong>Empate</strong> vs Moyin – 0-0</a></li>
+            <li><a href="main.html"><strong>Perdida</strong> vs Wig – 0-1</a></li>
+          </ul>
+        </div>
+      </section>
+      <section class="crear-partida">
+        <h2>Crear partida privada</h2>
+        <a href="play.html" class="boton-privada">Crear</a>
+      </section> 
+      <section class="partidas-abiertas">
+        <h2>Juegos publicos</h2>
+        <ul class="lista-partidas">
+          <li><a href="main.html">vs - Alk 1982 MMR</a></li>
+          <li><a href="main.html">vs - Max 528 MMR</a></li>
+          <li><a href="main.html">vs - Alhau 1267 MMR</a></li>
+          <li><a href="main.html">vs - Ludwig 720 MMR</a></li>
+          <li><a href="main.html">vs - Anton 1562 MMR</a></li>
+          <li><a href="main.html">vs - Ben 901 MMR</a></li>
+        </ul>
+      </section>     
+    </div>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/verificarSesion.js"></script>
+</body>
+</html>

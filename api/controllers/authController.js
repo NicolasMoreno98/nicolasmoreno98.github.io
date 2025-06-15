@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "clave_super_secreta";
 const JWT_EXPIRACION = "1d";
 
-
+// Registrar nuevo usuario
 exports.register = async (req, res) => {
   const { nombreUsuario, correo, contraseña, fechaNacimiento } = req.body;
 
@@ -37,12 +37,45 @@ exports.register = async (req, res) => {
   }
 };
 
+// Iniciar sesión
+exports.login = async (req, res) => {
+  const { nombreUsuario, contraseña } = req.body;
 
-exports.login = (req, res) => {
-  return res.status(200).json({ mensaje: "Login simulado" });
+  if (!nombreUsuario || !contraseña) {
+    return res.status(400).json({ mensaje: "Faltan credenciales." });
+  }
+
+  try {
+    const usuario = await User.findOne({ nombreUsuario });
+    if (!usuario) {
+      return res.status(401).json({ mensaje: "Usuario no encontrado." });
+    }
+
+    const coincide = await bcrypt.compare(contraseña, usuario.contraseña);
+    if (!coincide) {
+      return res.status(401).json({ mensaje: "Contraseña incorrecta." });
+    }
+
+    const token = jwt.sign({ id: usuario._id }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRACION
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "Lax",       // ← Ideal para Live Server
+      maxAge: 24 * 60 * 60 * 1000
+    });
+
+    return res.json({ mensaje: "Inicio de sesión exitoso." });
+  } catch (err) {
+    console.error("Error al iniciar sesión:", err);
+    return res.status(500).json({ mensaje: "Error interno del servidor." });
+  }
 };
 
+// Cerrar sesión
 exports.logout = (req, res) => {
   res.clearCookie("token");
-  return res.json({ mensaje: "Sesión cerrada (simulada)" });
+  return res.json({ mensaje: "Sesión cerrada." });
 };
+

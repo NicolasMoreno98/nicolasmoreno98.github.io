@@ -8,8 +8,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
+
+// CORS para desarrollo con Live Server
 app.use(cors({
-  origin: "http://127.0.0.1:5500",
+  origin: ["http://127.0.0.1:5500", "http://localhost:5500"],
   credentials: true
 }));
 
@@ -19,9 +21,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 // Conexión a MongoDB local
 const startServer = async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/ajedrez", {
-      // useNewUrlParser y useUnifiedTopology ya no son necesarios en Mongoose >= 6
-    });
+    await mongoose.connect("mongodb://127.0.0.1:27017/ajedrez");
 
     console.log("✅ MongoDB conectado");
     app.listen(3000, () => {
@@ -32,4 +32,7 @@ const startServer = async () => {
   }
 };
 
+app.use("/api/partidas", require("./routes/partidaRoutes"));
+
 startServer();
+

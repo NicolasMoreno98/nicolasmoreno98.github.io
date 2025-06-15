@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <header>
+    <nav class="nav-horizontal">
+      <div class="menu-item"><a href="main.html">Página principal</a></div>
+      <div class="menu-item"><a href="play.html">Partida de ajedrez</a></div>
+      <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
+      <div class="menu-item"><a href="about.html">Desarrollador</a></div>
+    </nav>
+    <a href="index.html">
+      <img src="img/Logo.png" alt="Chess.com" class="logo-principal" />
+    </a> 
+  </header>
+
+  <div class="form-container">
+    <h1>Iniciar Sesión</h1>
+    <form id="formLogin">
+      <div class="form-group">
+        <label for="nombreUsuario">Nombre de usuario</label>
+        <input type="text" id="nombreUsuario" name="nombreUsuario" required />
+      </div>
+
+      <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" required />
+      </div>
+
+      <button type="submit" class="form-submit">Entrar</button>
+    </form>
+    <p>¿No tienes una cuenta? <a href="register.html">Crea una aquí</a>.</p>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="js/login.js"></script>
+  <script src="js/verificarSesion.js"></script>
+</body>
+</html>
+
