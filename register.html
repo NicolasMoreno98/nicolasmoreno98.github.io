@@ -6,19 +6,27 @@
   <title>Crear Cuenta</title>
   <link rel="stylesheet" href="estilos.css" />
 </head>
+
 <body>
+  <header>
+    <nav class="nav-horizontal">
+      <div class="menu-item"><a href="main.html">Página principal</a></div>
+      <div class="menu-item"><a href="profile.html">Perfil de usuario</a></div>
+      <div class="menu-item"><a href="play.html">Partida de ajedrez</a></div>
+      <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
+      <div class="menu-item"><a href="about.html">Desarrollador</a></div>
+    </nav>
+    <a href="index.html">
+      <img src="Logo.png" alt="Chess.com" class="logo-principal" />
+    </a> 
+  </header>
   <div class="form-container">
     <h1>Crear una cuenta</h1>
-    <form action="play.html" method="get">
+    <form id="formRegistro">
       <div class="form-group">
-        <label for="nombre">Nombre</label>
+        <label for="nombre">Nombre de usuario</label>
         <input type="text" id="nombre" name="nombre" required />
       </div>
-      <div class="form-group">
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" required />
-      </div>
-
       <div class="form-group">
         <label for="correo">Correo electrónico</label>
         <input type="email" id="correo" name="correo" required />
@@ -42,5 +50,56 @@
       <button type="submit" class="form-submit">Registrarse</button>
     </form>
   </div>
+
+  <script>
+    document.getElementById("formRegistro").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const nombreUsuario = document.getElementById("nombre").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const contraseña = document.getElementById("contrasena").value;
+      const confirmar = document.getElementById("confirmar").value;
+      const fechaNacimiento = document.getElementById("nacimiento").value;
+
+      if (contraseña !== confirmar) {
+        alert("Las contraseñas no coinciden.");
+        return;
+      }
+
+      // Validación de edad mínima (13 años)
+      const hoy = new Date();
+      const nacimiento = new Date(fechaNacimiento);
+      const edad = hoy.getFullYear() - nacimiento.getFullYear();
+      const mes = hoy.getMonth() - nacimiento.getMonth();
+      const dia = hoy.getDate() - nacimiento.getDate();
+      const tiene13 = edad > 13 || (edad === 13 && (mes > 0 || (mes === 0 && dia >= 0)));
+
+      if (!tiene13) {
+        alert("Debes tener al menos 13 años para registrarte.");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:3000/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ nombreUsuario, correo, contraseña, fechaNacimiento })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert("Registro exitoso. Ahora puedes iniciar sesión.");
+          window.location.href = "index.html";
+        } else {
+          alert(data.mensaje || "Error al registrar.");
+        }
+      } catch (err) {
+        alert("Error de conexión con el servidor.");
+      }
+    });
+  </script>
 </body>
 </html>
+
