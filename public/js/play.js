@@ -32,14 +32,27 @@ async function cargarDatosUsuarioYPartida() {
   const partida = await resPartida.json();
 
   // Asignar miColor
-    if (String(usuarioActual._id) === String(partida.jugador1)) {
-      miColor = partida.colorCreador === "blanco" ? "white" : "black";
-    } else if (String(usuarioActual._id) === String(partida.jugador2)) {
-      miColor = partida.colorCreador === "blanco" ? "black" : "white";
-    } else {
-      miColor = "espectador";
-    }
-    alert("Tu color en esta partida es: " + miColor);
+  if (String(usuarioActual._id) === String(partida.jugador1)) {
+    miColor = partida.colorCreador === "blanco" ? "Blanco" : "Negro";
+  } else if (String(usuarioActual._id) === String(partida.jugador2)) {
+    miColor = partida.colorCreador === "blanco" ? "Negro" : "Blanco";
+  } else if (!partida.jugador2) {
+    // Si no hay jugador2, este usuario debería ser el jugador2
+    miColor = partida.colorCreador === "blanco" ? "Negro" : "Blanco";
+    // Actualizar jugador2 en el servidor
+    await fetch(`${API_BASE}/api/partidas/${codigoPartida}/unirse`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    });
+  } else {
+    miColor = "espectador";
+  }
+  alert("Tu color en esta partida es: " + miColor);
+
+  // Convertir miColor para la lógica del juego después del alert
+  if (miColor === "Blanco") miColor = "white";
+  else if (miColor === "Negro") miColor = "black";
 }
 
 
@@ -389,60 +402,99 @@ document.getElementById('btn-reiniciar').onclick = function() {
   renderCaptured();
   startTimer();
 };
-document.getElementById('btn-rendirse').onclick = function() {
-  clearInterval(timerInterval);
-  let ganador = turn == 'white' ? 'Negras' : 'Blancas';
-  alert('¡Victoria para ' + ganador + ' por rendición!');
+let partidaFinalizada = false;
+let mensajeVictoriaMostrado = false;
+
+document.getElementById('btn-rendirse').onclick = async function() {
+  if (partidaFinalizada) return;
+  if (miColor === "espectador") {
+    alert("Los espectadores no pueden rendirse");
+    return;
+  }
+  if (miColor === null) {
+    alert("Debes ser un jugador para rendirte");
+    return;
+  }
+  if (!confirm("¿Estás seguro de que quieres rendirte?")) return;
+
+  try {
+    clearInterval(timerInterval);
+    const res = await fetch(`${API_BASE}/api/partidas/${codigoPartida}/rendirse`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.mensaje || "Error al rendirse");
+    }
+
+    // No mostrar el mensaje aquí, se mostrará en cargarPartidaDesdeServidor
+    partidaFinalizada = true;
+    document.getElementById('btn-rendirse').disabled = true;
+    
+  } catch (err) {
+    console.error("Error al rendirse:", err);
+    alert(err.message || "Error al procesar la rendición");
+    if (!partidaFinalizada) {
+      startTimer();
+    }
+  }
 };
 
 async function cargarPartidaDesdeServidor() {
   try {
-    const params = new URLSearchParams(window.location.search);
-    const codigo = params.get("partida");
-    if (!codigo) {
-      alert("Partida no especificada.");
-      return;
-    }
-
-    const res = await fetch(`${API_BASE}/api/partidas/${codigo}`, {
+    const res = await fetch(`${API_BASE}/api/partidas/${codigoPartida}`, {
       credentials: "include"
     });
+
     if (!res.ok) {
-      alert("No se pudo cargar la partida.");
-      return;
+      throw new Error("Error al cargar la partida");
     }
 
     const data = await res.json();
+    if (!data) {
+      throw new Error("Datos de partida no válidos");
+    }
 
-    // --- AQUÍ ASIGNA EL TABLERO CORRECTAMENTE ---
+    // Verificar si la partida terminó
+    if (!mensajeVictoriaMostrado && data.estado === "finalizada" && data.resultado?.ganador) {
+      clearInterval(timerInterval);
+      const colorGanador = data.resultado.ganador === "blanco" ? "Blancas" : "Negras";
+      const razon = data.resultado.razon === "rendicion" ? "por rendición" : "por tiempo";
+      alert(`¡Victoria para las ${colorGanador} ${razon}!`);
+      document.getElementById('btn-rendirse').disabled = true;
+      partidaFinalizada = true;
+      mensajeVictoriaMostrado = true;
+      return;
+    }
+
+    // Actualizar estado del tablero
     if (data.tablero) {
       initialPosition = data.tablero;
-    } else {
-      initialPosition = [
-        ["♜","♞","♝","♛","♚","♝","♞","♜"],
-        ["♟","♟","♟","♟","♟","♟","♟","♟"],
-        ["","","","","","","",""],
-        ["","","","","","","",""],
-        ["","","","","","","",""],
-        ["","","","","","","",""],
-        ["♙","♙","♙","♙","♙","♙","♙","♙"],
-        ["♖","♘","♗","♕","♔","♗","♘","♖"]
-      ];
     }
-    // Si tu backend envía también el turno, asigna turn = data.turno;
+
+    // Actualizar historial de movimientos
+    if (data.historialMovimientos) {
+      moveHistory = data.historialMovimientos;
+    }
+
+    // Actualizar piezas capturadas
+    if (data.piezasCapturadas) {
+      capturedWhite = data.piezasCapturadas.blancas || [];
+      capturedBlack = data.piezasCapturadas.negras || [];
+    }
+
     if (data.turno) {
       turn = data.turno;
-    } else {
-      turn = 'white';
     }
 
-    // Llama siempre al renderBoard al final
+    // Actualizar toda la UI
     renderBoard();
-    renderMoveHistory && renderMoveHistory(); // Por si la función existe
-    renderCaptured && renderCaptured();
-
+    renderMoveHistory();
+    renderCaptured();
   } catch (err) {
-    alert("Error de conexión con el servidor");
     console.error("Error al cargar partida:", err);
   }
 }
@@ -457,7 +509,11 @@ async function moverPiezaEnServidor(codigoPartida, nuevaPosicion, historial, tur
         nuevaPosicion,
         historial,
         turno,
-        timers
+        timers,
+        piezasCapturadas: {
+          blancas: capturedWhite,
+          negras: capturedBlack
+        }
       })
     });
     if (!res.ok) throw new Error("No se pudo guardar el movimiento en el servidor");

@@ -8,8 +8,9 @@ router.post("/", verificarJWT, partidaController.crearPartida);
 
 router.post('/partidas/:codigo/mover', verificarJWT, partidaController.moverPieza);
 
-
-module.exports = router;
-
+router.post("/:codigo/unirse", verificarJWT, partidaController.unirsePartida);
+router.post("/:codigo/rendirse", verificarJWT, partidaController.rendirse);
 router.post("/:codigo/mover", verificarJWT, partidaController.moverPieza);
 router.get('/:codigo', verificarJWT, partidaController.obtenerPartida);
+
+module.exports = router;

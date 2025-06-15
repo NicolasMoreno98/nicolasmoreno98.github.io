@@ -9,6 +9,10 @@ const partidaSchema = new mongoose.Schema({
   espectadores: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   invitados: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   estado: { type: String, enum: ["esperando", "jugando", "finalizada"], default: "esperando" },
+  resultado: {
+    ganador: { type: String, enum: ["blanco", "negro", null], default: null },
+    razon: { type: String, enum: ["rendicion", "tiempo", "jaque_mate", null], default: null }
+  },
   creadaEn: { type: Date, default: Date.now },
   tablero: {
     type: [[String]],
@@ -23,7 +27,17 @@ const partidaSchema = new mongoose.Schema({
       ["♖","♘","♗","♕","♔","♗","♘","♖"]
     ]
   },
-  turno: { type: String, default: "white" }
+  turno: { type: String, default: "white" },
+  historialMovimientos: [{
+    pieza: String,
+    color: String,
+    de: String,
+    a: String
+  }],
+  piezasCapturadas: {
+    blancas: [String],
+    negras: [String]
+  }
 });
 
 module.exports = mongoose.model("Partida", partidaSchema);

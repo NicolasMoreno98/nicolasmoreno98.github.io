@@ -35,4 +35,3 @@ const startServer = async () => {
 app.use("/api/partidas", require("./routes/partidaRoutes"));
 
 startServer();
-
