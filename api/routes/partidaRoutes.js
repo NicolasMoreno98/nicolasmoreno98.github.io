@@ -3,12 +3,13 @@ const router = express.Router();
 const partidaController = require("../controllers/partidaController");
 const verificarJWT = require("../middleware/verificarJWT");
 
-// ✅ Definir rutas ANTES de exportar
+
 router.post("/", verificarJWT, partidaController.crearPartida);
 
-// puedes agregar más rutas aquí luego...
+router.post('/partidas/:codigo/mover', verificarJWT, partidaController.moverPieza);
+
 
 module.exports = router;
 
-router.post("/unirse/:codigo", verificarJWT, partidaController.unirsePartida);
-router.get("/:id", verificarJWT, partidaController.obtenerPartida);
+router.post("/:codigo/mover", verificarJWT, partidaController.moverPieza);
+router.get('/:codigo', verificarJWT, partidaController.obtenerPartida);

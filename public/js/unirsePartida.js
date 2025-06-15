@@ -4,30 +4,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    respuesta.textContent = "Buscando partida...";
 
     const codigo = document.getElementById("codigo").value.trim();
-    if (!codigo) return alert("Debes ingresar un código de partida");
 
     try {
-      const res = await fetch(`${API_BASE}/api/partidas/unirse/${codigo}`, {
-        method: "POST",
+      // Consultar la existencia de la partida
+      const res = await fetch(`${API_BASE}/api/partidas/${codigo}`, {
+        method: "GET",
         credentials: "include"
       });
 
       const data = await res.json();
 
-      if (res.ok) {
-        const rol = data.rol === "jugador" ? "como jugador" : "como espectador";
-        respuesta.innerHTML = `✅ Te uniste a la partida ${codigo} ${rol}.`;
-        setTimeout(() => {
-          window.location.href = `play.html?id=${data.id}`;
-        }, 2000);
+      if (res.ok && data.codigo === codigo) {
+        respuesta.innerHTML = `
+          <span style="color: green;">¡Partida encontrada!</span><br>
+          <button id="btn-ir-partida" style="margin-top: 12px; padding: 8px 16px; font-size: 16px; border-radius: 6px;">Ir a la partida</button>
+        `;
+        document.getElementById("btn-ir-partida").onclick = () => {
+          window.location.href = `play.html?partida=${codigo}`;
+        };
       } else {
-        respuesta.innerHTML = `❌ ${data.mensaje || "Error al unirse a la partida"}`;
+        respuesta.innerHTML = `<span style="color: red;">No se encontró la partida o el código es incorrecto.</span>`;
       }
     } catch (err) {
-      console.error(err);
-      respuesta.innerHTML = "❌ Error de conexión con el servidor.";
+      respuesta.innerHTML = `<span style="color: red;">Error de conexión con el servidor.</span>`;
     }
   });
 });

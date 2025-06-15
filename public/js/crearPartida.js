@@ -1,59 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("formCrearPartida"); // OJO: id correcto!
-  const resultadoDiv = document.getElementById("resultado");
+  const form = document.getElementById("formCrearPartida");
+  const resultado = document.getElementById("resultado");
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    resultado.innerHTML = "Creando partida...";
 
     const color = document.getElementById("color").value;
-    if (!color) {
-      resultadoDiv.textContent = "Debes seleccionar un color.";
-      resultadoDiv.style.color = "red";
-      return;
-    }
-
     try {
       const res = await fetch(`${API_BASE}/api/partidas`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ color })
       });
 
       const data = await res.json();
-
       if (res.ok && data.codigo) {
-        resultadoDiv.innerHTML = `
-          <b>Código de invitación:</b>
-          <span style="font-family:monospace">${data.codigo}</span>
-          <button id="btn-copiar">Copiar</button>
+        resultado.innerHTML = `
+          <div>
+            <p>Comparte este código para invitar a un jugador:</p>
+            <code id="codigo-partida" style="font-size:22px; background:#111; color:#58f; padding:4px 12px; border-radius:6px;">${data.codigo}</code>
+            <button id="btn-copiar" style="margin-left:8px;">Copiar</button>
+          </div>
+          <button id="btn-ir-partida" style="margin-top:18px; padding:8px 18px; font-size:16px; border-radius:8px; background:#222; color:#fff; cursor:pointer;">Ir a la partida</button>
         `;
-        resultadoDiv.style.color = "inherit";
 
-        // Permitir copiar el código con un botón
         document.getElementById("btn-copiar").onclick = () => {
           navigator.clipboard.writeText(data.codigo);
-          alert("Código copiado al portapapeles");
+          alert("Código copiado");
         };
 
-        // Redirigir automáticamente a la partida
-        setTimeout(() => {
+        document.getElementById("btn-ir-partida").onclick = () => {
           window.location.href = `play.html?partida=${data.codigo}`;
-        }, 1000);
+        };
       } else {
-        resultadoDiv.textContent = data.mensaje || "No se pudo crear la partida.";
-        resultadoDiv.style.color = "red";
+        resultado.innerHTML = data.mensaje || "Error al crear partida";
       }
     } catch (err) {
-      resultadoDiv.textContent = "Error de conexión con el servidor.";
-      resultadoDiv.style.color = "red";
-      console.error(err);
+      resultado.innerHTML = "Error de conexión al crear la partida.";
     }
   });
 });
-
-
-
-

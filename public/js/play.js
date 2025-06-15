@@ -1,68 +1,7 @@
-// === CONFIGURACIÓN DE PARTIDA DESDE URL Y API ===
-const params = new URLSearchParams(window.location.search);
-const partidaId = params.get("id");
-
-if (!partidaId) {
-  alert("Partida no especificada.");
-  window.location.href = "main.html";
-}
-
-let rolUsuario = null; // blanco, negro o espectador
-
-async function cargarPartidaDesdeServidor() {
-  try {
-    const res = await fetch(`${API_BASE}/api/partidas/${partidaId}`, {
-      credentials: "include"
-    });
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.mensaje || "No se pudo cargar la partida");
-      return;
-    }
-
-    rolUsuario = data.rol;
-    mostrarColorUsuario();
-  } catch (err) {
-    console.error("Error al conectar con el servidor:", err);
-    alert("Error de conexión con el servidor");
-  }
-}
-
-function mostrarColorUsuario() {
-  const zona = document.getElementById("zona-turno-tiempo");
-  if (!zona) return;
-  if (rolUsuario === "espectador") {
-    zona.textContent = "Modo espectador 👀";
-  } else {
-    zona.textContent = `Eres ${rolUsuario}`;
-  }
-}
-
-function esPiezaDelJugador(pieza) {
-  const blancas = "♙♖♘♗♕♔";
-  const negras = "♟♜♞♝♛♚";
-  if (rolUsuario === "blanco") return blancas.includes(pieza);
-  if (rolUsuario === "negro") return negras.includes(pieza);
-  return false;
-}
-
-function puedeMoverPieza(pieza) {
-  const turnoActual = (turn === 'white') ? 'blanco' : 'negro';
-  return (
-    rolUsuario !== "espectador" &&
-    esPiezaDelJugador(pieza) &&
-    rolUsuario === turnoActual
-  );
-}
-
-// === CÓDIGO ORIGINAL DEL JUEGO ===
-
-// ...
-var tableroContainer = document.getElementById('tablero-ajedrez');
-var zonaTurnoTiempo = document.getElementById('zona-turno-tiempo');
-var zonaHistorial = document.getElementById('zona-historial');
-var board = document.createElement('div');
+let tableroContainer = document.getElementById('tablero-ajedrez');
+let zonaTurnoTiempo = document.getElementById('zona-turno-tiempo');
+let zonaHistorial = document.getElementById('zona-historial');
+let board = document.createElement('div');
 board.style.display = 'grid';
 board.style.gridTemplateColumns = 'repeat(9, 60px)';
 board.style.gridTemplateRows = 'repeat(9, 60px)';
@@ -74,37 +13,36 @@ board.style.background = '#242424';
 board.style.borderRadius = '10px';
 tableroContainer.innerHTML = '';
 tableroContainer.appendChild(board);
-var initialPosition = [
-  ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜'],
-  ['♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟'],
-  ['', '', '', '', '', '', '', ''],
-  ['', '', '', '', '', '', '', ''],
-  ['', '', '', '', '', '', '', ''],
-  ['', '', '', '', '', '', '', ''],
-  ['♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙'],
-  ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖']
+const API_BASE = "http://localhost:3000";
+
+
+let initialPosition = [
+  ["♜", "♞", "♝", "♛", "♚", "♝", "♞", "♜"],
+  ["♟", "♟", "♟", "♟", "♟", "♟", "♟", "♟"],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", "", ""],
+  ["♙", "♙", "♙", "♙", "♙", "♙", "♙", "♙"],
+  ["♖", "♘", "♗", "♕", "♔", "♗", "♘", "♖"]
 ];
-var files = ['a','b','c','d','e','f','g','h'];
-var ranks = ['8','7','6','5','4','3','2','1'];
-var dragSource = null;
-var turn = 'white';
-var timers = { white: 300, black: 300 };
-var timerInterval = null;
-var moveHistory = [];
-var capturedWhite = [];
-var capturedBlack = [];
+let files = ['a','b','c','d','e','f','g','h'];
+let ranks = ['8','7','6','5','4','3','2','1'];
+let dragSource = null;
+let turn = 'white';
+let timers = { white: 300, black: 300 };
+let timerInterval = null;
+let moveHistory = [];
+let capturedWhite = [];
+let capturedBlack = [];
+
 function isWhite(piece) {
-  if (piece == '♙' || piece == '♖' || piece == '♘' || piece == '♗' || piece == '♕' || piece == '♔') {
-    return true;
-  }
-  return false;
+  return ['♙','♖','♘','♗','♕','♔'].includes(piece);
 }
 function isBlack(piece) {
-  if (piece == '♟' || piece == '♜' || piece == '♞' || piece == '♝' || piece == '♛' || piece == '♚') {
-    return true;
-  }
-  return false;
+  return ['♟','♜','♞','♝','♛','♚'].includes(piece);
 }
+
 function isLegalMove(piece, from, to) {
   if (to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7) return false;
   if (from.row === to.row && from.col === to.col) return false;
@@ -262,9 +200,7 @@ function isLegalMove(piece, from, to) {
   return false;
 }
 function startTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-  }
+  if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(function() {
     timers[turn] = timers[turn] - 1;
     renderBoard();
@@ -281,24 +217,19 @@ function formatTime(secs) {
   if (s < 10) s = '0' + s;
   return m + ':' + s;
 }
+
 function renderBoard() {
   board.innerHTML = '';
-  for (var row = 0; row < 9; row++) {
-    for (var col = 0; col < 9; col++) {
-      var cell = document.createElement('div');
-      var cellBg;
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      let cell = document.createElement('div');
+      let cellBg;
       if (row > 0 && col > 0) {
-        if ((row + col) % 2 == 0) {
-          cellBg = '#b3b3b3';
-        } else {
-          cellBg = '#808080';
-        }
+        cellBg = (row + col) % 2 == 0 ? '#b3b3b3' : '#808080';
       } else {
         cellBg = '#242424';
       }
-      if (row == 0 && col == 0) {
-        cellBg = '#111';
-      }
+      if (row == 0 && col == 0) cellBg = '#111';
       cell.style.width = '60px';
       cell.style.height = '60px';
       cell.style.boxSizing = 'border-box';
@@ -306,27 +237,17 @@ function renderBoard() {
       cell.style.alignItems = 'center';
       cell.style.justifyContent = 'center';
       cell.style.fontSize = '20px';
-      if (row > 0 && col > 0) {
-        cell.style.border = '1px solid #333';
-      } else {
-        cell.style.border = 'none';
-      }
+      cell.style.border = (row > 0 && col > 0) ? '1px solid #333' : 'none';
       cell.style.background = cellBg;
       cell.style.color = (row > 0 && col > 0) ? '#222' : '#f1f1f1';
       cell.style.fontWeight = (row == 0 || col == 0) ? 'bold' : 'normal';
-      if (row == 0 && col > 0) {
-        cell.textContent = files[col - 1];
-      } else if (col == 0 && row > 0) {
-        cell.textContent = ranks[row - 1];
-      } else if (row > 0 && col > 0) {
-        var piece = initialPosition[row - 1][col - 1];
+      if (row == 0 && col > 0) cell.textContent = files[col - 1];
+      else if (col == 0 && row > 0) cell.textContent = ranks[row - 1];
+      else if (row > 0 && col > 0) {
+        let piece = initialPosition[row - 1][col - 1];
         cell.textContent = piece;
         cell.style.fontSize = '40px';
-        if (piece) {
-          cell.style.cursor = 'pointer';
-        } else {
-          cell.style.cursor = 'default';
-        }
+        cell.style.cursor = piece ? 'pointer' : 'default';
         cell.setAttribute('data-row', row - 1);
         cell.setAttribute('data-col', col - 1);
         if (piece && ((turn == 'white' && isWhite(piece)) || (turn == 'black' && isBlack(piece)))) {
@@ -340,29 +261,22 @@ function renderBoard() {
         cell.addEventListener('drop', function(e) {
           e.preventDefault();
           if (!dragSource) return;
-
-          var from = dragSource;
-          var to = {
-            row: parseInt(this.getAttribute('data-row')),
-            col: parseInt(this.getAttribute('data-col'))
-          };
-
-          var movingPiece = initialPosition[from.row][from.col];
-
-          // ✅ SOLO PERMITIR SI EL JUGADOR TIENE PERMISO
-          if (!puedeMoverPieza(movingPiece)) return;
-
-          if (isLegalMove(movingPiece, from, to)) {
-            moveAndSwitchTurn(from, to, movingPiece);
+          let from = dragSource;
+          let to = { row: parseInt(this.getAttribute('data-row')), col: parseInt(this.getAttribute('data-col')) };
+          let movingPiece = initialPosition[from.row][from.col];
+          if ((turn == 'white' && isWhite(movingPiece)) || (turn == 'black' && isBlack(movingPiece))) {
+            if (isLegalMove(movingPiece, from, to)) {
+              moveAndSwitchTurn(from, to, movingPiece);
+            }
           }
         });
-
       }
       board.appendChild(cell);
     }
   }
   renderTurnAndTimers();
 }
+
 function renderTurnAndTimers() {
   zonaTurnoTiempo.innerHTML = '<div style="color:#fff; text-align:center;">' +
     '<b>Turno:</b> <span style="color:' + (turn == 'white' ? '#fff' : '#222') + ';background:' + (turn == 'white' ? '#888' : '#eee') + ';padding:2px 8px;border-radius:6px;">' + (turn == 'white' ? 'Blancas' : 'Negras') + '</span>' +
@@ -374,33 +288,25 @@ function renderTurnAndTimers() {
     '</div>';
 }
 function renderMoveHistory() {
-  var html = '<b style="color:#fff;">Historial de movimientos</b><hr style="margin:4px 0; border-color:#555">';
+  let html = '<b style="color:#fff;">Historial de movimientos</b><hr style="margin:4px 0; border-color:#555">';
   html += '<div style="max-height:400px;overflow-y:auto;">';
   html += '<div style="display:flex;font-weight:bold;color:#aaa;"><span style="width:32px;">#</span><span style="width:60px;">Pieza</span><span style="width:60px;">De</span><span style="width:60px;">A</span></div>';
-  for (var i = 0; i < moveHistory.length; i++) {
-    var m = moveHistory[i];
+  for (let i = 0; i < moveHistory.length; i++) {
+    let m = moveHistory[i];
     html += '<div style="display:flex;align-items:center;color:#e0e0e0;"><span style="width:32px;">' + (i+1) + '</span><span style="width:60px;">' + m.pieza + '</span><span style="width:60px;">' + m.de + '</span><span style="width:60px;">' + m.a + '</span></div>';
   }
   html += '</div>';
   zonaHistorial.innerHTML = html;
 }
 function renderCaptured() {
-  var blancas = document.getElementById('capturadas-blancas');
-  var negras = document.getElementById('capturadas-negras');
-  if (capturedWhite.length > 0) {
-    blancas.innerHTML = 'Blancas capturadas: ' + capturedWhite.join(' ');
-  } else {
-    blancas.innerHTML = '';
-  }
-  if (capturedBlack.length > 0) {
-    negras.innerHTML = 'Negras capturadas: ' + capturedBlack.join(' ');
-  } else {
-    negras.innerHTML = '';
-  }
+  let blancas = document.getElementById('capturadas-blancas');
+  let negras = document.getElementById('capturadas-negras');
+  blancas.innerHTML = capturedWhite.length > 0 ? 'Blancas capturadas: ' + capturedWhite.join(' ') : '';
+  negras.innerHTML = capturedBlack.length > 0 ? 'Negras capturadas: ' + capturedBlack.join(' ') : '';
 }
-function moveAndSwitchTurn(from, to, movingPiece) {
-  var target = initialPosition[to.row][to.col];
-  var capture = target && ((turn == 'white' && isBlack(target)) || (turn == 'black' && isWhite(target)));
+async function moveAndSwitchTurn(from, to, movingPiece) {
+  let target = initialPosition[to.row][to.col];
+  let capture = target && ((turn == 'white' && isBlack(target)) || (turn == 'black' && isWhite(target)));
   if (capture) {
     if (isWhite(target)) capturedWhite.push(target);
     else if (isBlack(target)) capturedBlack.push(target);
@@ -408,18 +314,14 @@ function moveAndSwitchTurn(from, to, movingPiece) {
   initialPosition[to.row][to.col] = movingPiece;
   initialPosition[from.row][from.col] = '';
   dragSource = null;
-  var pieza = movingPiece;
-  var color = isWhite(movingPiece) ? 'Blancas' : 'Negras';
-  var files = ['a','b','c','d','e','f','g','h'];
-  var ranks = ['8','7','6','5','4','3','2','1'];
-  var de = files[from.col] + ranks[from.row];
-  var a = files[to.col] + ranks[to.row];
+  let pieza = movingPiece;
+  let color = isWhite(movingPiece) ? 'Blancas' : 'Negras';
+  let files = ['a','b','c','d','e','f','g','h'];
+  let ranks = ['8','7','6','5','4','3','2','1'];
+  let de = files[from.col] + ranks[from.row];
+  let a = files[to.col] + ranks[to.row];
   moveHistory.push({pieza: pieza, color: color, de: de, a: a});
-  if (turn == 'white') {
-    turn = 'black';
-  } else {
-    turn = 'white';
-  }
+  turn = turn == 'white' ? 'black' : 'white';
   renderBoard();
   renderMoveHistory();
   renderCaptured();
@@ -448,25 +350,86 @@ document.getElementById('btn-reiniciar').onclick = function() {
 };
 document.getElementById('btn-rendirse').onclick = function() {
   clearInterval(timerInterval);
-  var ganador;
-  if (turn == 'white') {
-    ganador = 'Negras';
-  } else {
-    ganador = 'Blancas';
-  }
+  let ganador = turn == 'white' ? 'Negras' : 'Blancas';
   alert('¡Victoria para ' + ganador + ' por rendición!');
 };
-cargarPartidaDesdeServidor().then(() => {
-  renderBoard();
-  renderMoveHistory();
-  renderCaptured();
-  startTimer();
-});
 
-window.addEventListener("DOMContentLoaded", () => {
+// ======== Cargar la partida del backend ========
+async function cargarPartidaDesdeServidor() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const codigo = params.get("partida");
+    if (!codigo) {
+      alert("Partida no especificada.");
+      return;
+    }
+
+    const res = await fetch(`${API_BASE}/api/partidas/${codigo}`, {
+      credentials: "include"
+    });
+    if (!res.ok) {
+      alert("No se pudo cargar la partida.");
+      return;
+    }
+
+    const data = await res.json();
+
+    // --- AQUÍ ASIGNA EL TABLERO CORRECTAMENTE ---
+    if (data.tablero) {
+      initialPosition = data.tablero;
+    } else {
+      initialPosition = [
+        ["♜","♞","♝","♛","♚","♝","♞","♜"],
+        ["♟","♟","♟","♟","♟","♟","♟","♟"],
+        ["","","","","","","",""],
+        ["","","","","","","",""],
+        ["","","","","","","",""],
+        ["","","","","","","",""],
+        ["♙","♙","♙","♙","♙","♙","♙","♙"],
+        ["♖","♘","♗","♕","♔","♗","♘","♖"]
+      ];
+    }
+    // Si tu backend envía también el turno, asigna turn = data.turno;
+    if (data.turno) {
+      turn = data.turno;
+    } else {
+      turn = 'white';
+    }
+
+    // Llama siempre al renderBoard al final
+    renderBoard();
+    renderMoveHistory && renderMoveHistory(); // Por si la función existe
+    renderCaptured && renderCaptured();
+
+  } catch (err) {
+    alert("Error de conexión con el servidor");
+    console.error("Error al cargar partida:", err);
+  }
+}
+
+async function moverPiezaEnServidor(codigoPartida, nuevaPosicion, historial, turno, timers) {
+  try {
+    const res = await fetch(`${API_BASE}/api/partidas/${codigoPartida}/mover`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        nuevaPosicion,
+        historial,
+        turno,
+        timers
+      })
+    });
+    if (!res.ok) throw new Error("No se pudo guardar el movimiento en el servidor");
+    return await res.json();
+  } catch (err) {
+    console.error("Error al guardar el movimiento:", err);
+    alert("Error al guardar el movimiento en el servidor");
+  }
+}
+
+setInterval(() => {
   cargarPartidaDesdeServidor();
-  renderBoard();
-  renderMoveHistory();
-  renderCaptured();
-  startTimer();
-});
+}, 1000);
+
+cargarPartidaDesdeServidor();

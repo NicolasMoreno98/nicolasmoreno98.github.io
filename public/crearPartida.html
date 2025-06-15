@@ -11,24 +11,25 @@
     <nav class="nav-horizontal">
       <div class="menu-item"><a href="main.html">Página principal</a></div>
       <div class="menu-item"><a href="rules.html">Historia y Reglas</a></div>
+      <div class="menu-item"><a href="about.html">Desarrollador</a></div>
     </nav>
-    <a href="index.html"><img src="img/Logo.png" class="logo-principal" /></a>
+    <a href="index.html">
+      <img src="img/Logo.png" alt="Chess.com" class="logo-principal" />
+    </a> 
   </header>
-
   <main class="contenido-centro">
     <div class="cuadro-contenido">
       <h2>Crear nueva partida</h2>
-      <form id="formCrearPartida">
+      <form id="formCrearPartida" autocomplete="off">
         <label for="color">Selecciona tu color:</label>
-        <select id="color" required>
-          <option value="">Seleccionar</option>
-          <option value="blanco">Blanco</option>
-          <option value="negro">Negro</option>
+        <select id="color" name="color" required>
+          <option value="">-- Selecciona --</option>
+          <option value="blanco">Blancas</option>
+          <option value="negro">Negras</option>
         </select>
         <button type="submit">Crear partida</button>
       </form>
-
-      <div id="resultado" class="form-group" style="margin-top: 1em;"></div>
+      <div id="resultado" style="margin-top:18px;"></div>
     </div>
   </main>
   <script src="js/config.js"></script>
