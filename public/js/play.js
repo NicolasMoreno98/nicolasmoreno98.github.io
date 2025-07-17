@@ -13,7 +13,6 @@ board.style.background = '#242424';
 board.style.borderRadius = '10px';
 tableroContainer.innerHTML = '';
 tableroContainer.appendChild(board);
-const API_BASE = "http://localhost:3000";
 const urlParams = new URLSearchParams(window.location.search);
 const codigoPartida = urlParams.get('partida');
 
